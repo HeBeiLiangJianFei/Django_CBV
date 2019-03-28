@@ -1,0 +1,72 @@
+{% extends 'login/base.html' %}
+{% load staticfiles %}
+{% block title %}登录{% endblock %}
+{% block css %}<link href="{% static 'css/login.css' %}" rel="stylesheet"/>{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+          <form class='form-login' action="" method="post">
+              {% if message %}
+                <div class="alert alert-warning">{{ message }}</div>
+              {% endif %}
+{#              <h2 class="text-center">欢迎登录</h2>#}
+{#              <div class="form-group">#}
+{#                <label for="id_username">用户名：</label>#}
+{#                <input type="text" name='username' class="form-control" id="id_username" placeholder="Username" autofocus required>#}
+{#              </div>#}
+{#              <div class="form-group">#}
+{#                <label for="id_password">密码：</label>#}
+{#                <input type="password" name='password' class="form-control" id="id_password" placeholder="Password" required>#}
+{#              </div>#}
+
+{#                {{ userform }}#}
+
+              <h2 class="text-center">欢迎登录</h2>
+              <div class="form-group">
+                  {{ userform.name.label_tag }}
+                  {{ userform.name}}
+              </div>
+              <div class="form-group">
+                  {{ userform.password.label_tag }}
+                  {{ userform.password }}
+              </div>
+
+              <div class="form-group">
+                  {{ userform.captcha.errors }}
+                  {{ userform.captcha.label_tag }}
+                  <span>点击刷新验证码</span>
+                  {{ userform.captcha }}
+              </div>
+
+
+
+
+
+
+
+              <button type="reset" class="btn btn-default pull-left">重置</button>
+              <button type="submit" class="btn btn-primary pull-right">提交</button>
+          </form>
+        </div>
+    </div> <!-- /container -->
+
+
+
+{% endblock %}
+{% block script %}
+
+
+{#实现对验证码的点击刷新#}
+<script>
+    $('.captcha').click(function () {
+        console.log("dianji");
+        $.getJSON('/captcha/refresh/', function (result) {
+            console.log("一部获取中");
+            $('.captcha').attr('src',result['image_url']);
+            $('#id_captcha_0').val(result['key'])
+        })
+    })
+</script>
+{% endblock %}
